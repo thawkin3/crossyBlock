@@ -1,0 +1,29 @@
+<div ng-controller="highscoresController">	
+
+	<h3>Top 10 High Scores</h3>
+
+	<table id="highScoresTable">
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<!-- <tr ng-repeat="score in highscores | orderBy: score : reverse track by $index" ng-show="$index < 10"> -->
+			<tr ng-repeat="score in highscores">
+				<td>{{ score.Username }}</td>
+				<td>{{ score.Score }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<br/>
+	<br/>
+	<a ng-href="#/game" id="again">Play Again</a>
+
+
+</div>

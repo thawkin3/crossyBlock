@@ -1,0 +1,115 @@
+/* FONT */
+@font-face {
+    font-family: zig;
+    src: url('zig.ttf');
+}
+
+
+/* GENERAL */
+body {
+  padding: 10px;
+  font-family: zig, "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  background: #777;
+  color: #f1f1f1;
+}
+
+a {
+  color: #ccc;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+p {
+	margin-bottom: 10px;
+}
+
+
+/* AUTHENTICATION */
+#tabs {
+	text-align: left;
+	margin-bottom: -13px;
+	margin-top: 40px;
+}
+
+.loginTab {
+	display: inline;
+    margin: 20px 0px -10px 0px;
+    padding: 10px 20px;
+    background: #6DB4F3;
+    background: rgba(111,182,243,0.35);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+}
+
+.activeTab {
+	background: #337AB7;
+}
+
+.errorMsg, .missingUsername, .missingPassword {
+	display: none;
+}
+
+@media (min-width: 992px) {
+	.container {
+	    width: 70%;
+	}
+}
+
+
+/* GAME */
+#gameDiv {
+	margin-top: -30px;
+}
+
+#theGameCanvas {
+	height: 500px;
+	width: 410px;
+	background: #050505;
+	border: 5px solid #f1f1f1;
+	margin: auto;
+}
+
+h1 {
+	letter-spacing: 12px;
+	margin-bottom: 40px;
+	margin-top: 0px;
+}
+
+#yourScore {
+	font-size: 30px;
+}
+
+#game span {
+	color: #ccc;
+	cursor: pointer;
+}
+
+
+/* HIGH SCORES */
+#highScoresTable {
+	margin: auto;
+	text-align: center;
+	margin-top: 30px;
+}
+
+#highScoresTable th {
+	text-align: center;
+	font-size: 18px;
+}
+
+#highScoresTable th, td {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+
+/* MEDIA QUERIES */
+@media (max-width: 600px) {
+	h1 {
+		font-size: 20px;
+	}
+}
