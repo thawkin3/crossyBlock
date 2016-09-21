@@ -65,12 +65,12 @@ p {
 	margin-top: -30px;
 }
 
-#theGameCanvas {
+#gameCanvas {
 	height: 500px;
 	width: 410px;
 	background: #050505;
-	border: 5px solid #f1f1f1;
 	margin: auto;
+	cursor: none;
 }
 
 h1 {
