@@ -174,7 +174,7 @@
 		// Build your obstacles
 		$scope.buildObstacles = function() {
 			// build them one row at a time
-			for (var i = 0; i < 3000; i++) {
+			for (var i = 0; i < 30; i++) {
 				// so randomly pick each of the variables
 				// the pick the vertical height space
 				var currentRow = [];
@@ -190,7 +190,7 @@
 				};
 
 				// place obstacles in the row
-				while (currentRowSettings.left < 10000) {
+				while (currentRowSettings.left < 10410) {
 					currentRow.push(
 						{
 							top: currentRowSettings.top,
@@ -213,13 +213,17 @@
 				obstacleSettings.top -= (currentRowSettings.height + currentRowSettings.spacing_vertical);
 			}
 
-			console.log(obstacles);
+			// console.log(obstacles);
 		}
 
 		// Keep score
 		$scope.updateScore = $interval(function() {
 			if (gameStart && !gameEnd) {
 				$scope.score++;
+				if ($scope.score % 10 == 0) {
+					obstacleSettings.top = obstacles[obstacles.length - 1][obstacles[obstacles.length-1].length-1].top - 40;
+					$scope.buildObstacles();
+				}
 			}
 		}, 1000);
 
