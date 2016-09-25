@@ -28,35 +28,16 @@ p {
 
 
 /* AUTHENTICATION */
-#tabs {
-	text-align: left;
-	margin-bottom: -13px;
-	margin-top: 40px;
+#usernameForm {
+	width: 70%;
+	margin: auto;
+	margin-top: 20px;
 }
-
-.loginTab {
-	display: inline;
-    margin: 20px 0px -10px 0px;
-    padding: 10px 20px;
-    background: #6DB4F3;
-    background: rgba(111,182,243,0.35);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    cursor: pointer;
-}
-
-.activeTab {
-	background: #337AB7;
-}
-
-.errorMsg, .missingUsername, .missingPassword {
-	display: none;
-}
-
-@media (min-width: 992px) {
-	.container {
-	    width: 70%;
-	}
+#usernameForm input {
+	width: 200px;
+	text-align: center;
+	margin: auto;
+	margin-bottom: 50px;
 }
 
 

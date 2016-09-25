@@ -6,6 +6,14 @@
 		/// VARIABLES
 		///////////////////////////////////////////////
 
+		// username
+		if (typeof $rootScope.root != "undefined") {
+			$rootScope.root.username = $rootScope.root.username || "Guest";
+		} else {
+			$rootScope.root = {};
+			$rootScope.root.username = "Guest";
+		}
+
 		// variables for game play
 		var gameStart = false;
 		var gameEnd = false;
@@ -49,7 +57,7 @@
 
 		// Submit your score
 		$scope.submitScore = function() {
-			var scoreObj = { "Username": $rootScope.user, "Score": $scope.score };
+			var scoreObj = { "Username": $rootScope.root.username, "Score": $scope.score };
 	        // console.log(scoreObj);
 	        var JSONscoreObj = JSON.stringify(scoreObj);
 	        // console.log(JSONscoreObj);
