@@ -1,18 +1,12 @@
 (function() {
-
 	var gameController = function ($scope, $routeParams, $rootScope, $location, $timeout, $interval) {
-
 		///////////////////////////////////////////////
 		/// VARIABLES
 		///////////////////////////////////////////////
 
 		// username
-		if (typeof $rootScope.root != "undefined") {
-			$rootScope.root.username = $rootScope.root.username || "Guest";
-		} else {
-			$rootScope.root = {};
-			$rootScope.root.username = "Guest";
-		}
+		$rootScope.root = $rootScope.root || {};
+		$rootScope.root.username = $rootScope.root.username || 'Guest';
 
 		// variables for game play
 		var gameStart = false;
@@ -57,29 +51,21 @@
 
 		// Submit your score
 		$scope.submitScore = function() {
-			var scoreObj = { "Username": $rootScope.root.username, "Score": $scope.score };
-	        // console.log(scoreObj);
-	        var JSONscoreObj = JSON.stringify(scoreObj);
-	        // console.log(JSONscoreObj);
-			var scoreUrl = "addscore";
+			var scoreObj = { Username: $rootScope.root.username, Score: $scope.score };
+			var jsonScoreObj = JSON.stringify(scoreObj);
+			var url = 'addscore';
 			
 			$.ajax({
-	  			url: scoreUrl,
-	  			type: "POST",
-	  			data: JSONscoreObj,
-	  			contentType: "application/json; charset=utf-8",
-	  			success: function(data,textStatus) {
-	      			$timeout(function(){	
-	      				console.log("done");
-	      			}, 10);
-	  			}
+	  			url: url,
+	  			type: 'POST',
+	  			data: jsonScoreObj,
+	  			contentType: 'application/json; charset=utf-8',
 			})
-			.fail(function(){});
-			
-			// go to the highscores view after 2 seconds
-			$timeout(function() {
-				$location.url("/highscores");
-			}, 2000);
+			.always(function() {
+				$timeout(function() {
+					$location.url('/highscores');
+				}, 1000);
+			});
 		};
 
 		// Locator function in a loop
@@ -96,13 +82,13 @@
 				$interval.cancel($scope.updateScore);
 
 				// Clear the canvas
-				ctx.fillStyle = "#050505";
+				ctx.fillStyle = '#050505';
 				ctx.fillRect(0, 0, canvas.width, canvas.height);
 				
 				// set the text that displays on the canvas
-				ctx.fillStyle = "#f1f1f1";
-				ctx.font = "20px zig";
-				ctx.fillText("GAME OVER",130,240);
+				ctx.fillStyle = '#f1f1f1';
+				ctx.font = '20px zig';
+				ctx.fillText('GAME OVER', 130, 240);
 				
 				// add our new score into the database
 				$scope.submitScore();
@@ -112,16 +98,16 @@
 		// Update ball position
 		$scope.update = function() {
 			// Move the player, left key takes priority over right
-			if (left && player_x > 0 + player_width/2) {
+			if (left && player_x > 0 + player_width / 2) {
 				player_x -= player_dx;
-			} else if (right && player_x < canvas.width - player_width/2) {
+			} else if (right && player_x < canvas.width - player_width / 2) {
 				player_x += player_dx;
 			};
 			
 			// Move the player, up key takes priority over down.
-			if (up && player_y > -5 + player_height/2) {
+			if (up && player_y > -5 + player_height / 2) {
 				player_y -= player_dy;
-			} else if (down && (player_y < canvas.height - player_height/2 || player_y > -5 + player_height/2)) {
+			} else if (down && (player_y < canvas.height - player_height / 2 || player_y > -5 + player_height / 2)) {
 				player_y += player_dy;
 			};
 
@@ -132,10 +118,10 @@
 
 			// Game end function if you've hit an obstacle
 			// top-left corner, top-right corner, bottom-left corner, bottom-right corner
-			if (ctx.getImageData(player_x - (1 + player_width/2), player_y - (1 + player_height/2), 1, 1).data[0] == 241
-				|| ctx.getImageData(player_x + player_width/2, player_y - (1 + player_height/2), 1, 1).data[0] == 241
-				|| ctx.getImageData(player_x - (1 + player_width/2), player_y + player_height/2, 1, 1).data[0] == 241
-				|| ctx.getImageData(player_x + player_width/2, player_y + player_height/2, 1, 1).data[0] == 241) {
+			if (ctx.getImageData(player_x - (1 + player_width / 2), player_y - (1 + player_height / 2), 1, 1).data[0] == 241
+				|| ctx.getImageData(player_x + player_width / 2, player_y - (1 + player_height / 2), 1, 1).data[0] == 241
+				|| ctx.getImageData(player_x - (1 + player_width / 2), player_y + player_height / 2, 1, 1).data[0] == 241
+				|| ctx.getImageData(player_x + player_width / 2, player_y + player_height / 2, 1, 1).data[0] == 241) {
 				gameEnd = true;
 			}
 
@@ -160,15 +146,15 @@
 		// Draw everything
 		$scope.draw = function() {
 			// Clear the canvas
-			ctx.fillStyle = "#050505";
+			ctx.fillStyle = '#050505';
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 			// Draw the player
-			ctx.fillStyle = "#f2f2f2";
-			ctx.fillRect(player_x - player_width/2, player_y - player_height/2, player_width, player_height);
+			ctx.fillStyle = '#f2f2f2';
+			ctx.fillRect(player_x - player_width / 2, player_y - player_height / 2, player_width, player_height);
 
 			// Draw the obstacles
-			ctx.fillStyle = "#f1f1f1";
+			ctx.fillStyle = '#f1f1f1';
 			for (var i = 0; i < obstacles.length; i++) {
 				// only draw them if they're in view
 				if (obstacles[i][0].top < 550 && obstacles[i][0].top > -50) {
@@ -220,16 +206,14 @@
 				// move the top position up for the next row
 				obstacleSettings.top -= (currentRowSettings.height + currentRowSettings.spacing_vertical);
 			}
-
-			// console.log(obstacles);
-		}
+		};
 
 		// Keep score
 		$scope.updateScore = $interval(function() {
 			if (gameStart && !gameEnd) {
 				$scope.score++;
 				if ($scope.score % 10 == 0) {
-					obstacleSettings.top = obstacles[obstacles.length - 1][obstacles[obstacles.length-1].length-1].top - 40;
+					obstacleSettings.top = obstacles[obstacles.length - 1][obstacles[obstacles.length - 1].length - 1].top - 40;
 					$scope.buildObstacles();
 				}
 			}
@@ -290,8 +274,8 @@
 		///////////////////////////////////////////////
 
 		// set up the canvas
-		var canvas = document.getElementById("gameCanvas");
-		var ctx = canvas.getContext("2d");
+		var canvas = document.getElementById('gameCanvas');
+		var ctx = canvas.getContext('2d');
 
 		// build your obstacles
 		$scope.buildObstacles();
@@ -300,9 +284,9 @@
 		$scope.draw();
 
 		// set the opening text that displays on the canvas
-		ctx.fillStyle = "#f1f1f1";
-		ctx.font = "14px zig";
-		ctx.fillText("PRESS THE UP ARROW KEY TO START",33,400);
+		ctx.fillStyle = '#f1f1f1';
+		ctx.font = '14px zig';
+		ctx.fillText('PRESS THE UP ARROW KEY TO START',33,400);
 
 	};
 
@@ -310,5 +294,4 @@
 
 	angular.module('CrossyBlock')
 	    .controller('gameController', gameController);
-
 }());
