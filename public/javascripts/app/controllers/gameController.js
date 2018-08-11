@@ -257,6 +257,8 @@
 				case 40: // Down
 					down = true;
 					break;
+				default: // Stop movement on any other key
+					up = down = left = right = false;
 			};
 		};
 
@@ -277,6 +279,8 @@
 				case 40: // Down
 					down = false;
 					break;
+				default: // Stop movement on any other key
+					up = down = left = right = false;
 			};
 		};
 
