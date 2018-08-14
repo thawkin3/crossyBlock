@@ -49,8 +49,27 @@
 		/// FUNCTIONS
 		///////////////////////////////////////////////
 
+		// Re-initialize variables when the game starts
+		function init() {
+			$scope.score = 0;
+			player_width = 10;
+			player_height = 10;
+			player_x = 200;
+			player_y = 440;
+			player_dx = 2;
+			player_dy = 2;
+		}
+
 		// Submit your score
 		$scope.submitScore = function() {
+			// recalculate the score to help prevent cheaters from changing their score
+			// there is a leeway of 10 points since it's possible you could have moved backwards
+	    	for (var i = 0; i < obstacles.length; i++) {
+				if (obstacles[i][0].top > player_y && $scope.score - (i + 1) > 10) {
+					$scope.score = i + 1;
+					$scope.$apply();
+				}
+			}
 			var scoreObj = { Username: $rootScope.root.username, Score: $scope.score };
 			var jsonScoreObj = JSON.stringify(scoreObj);
 			var url = 'addscore';
@@ -78,9 +97,6 @@
 				// Recursively call our loop
 				window.requestAnimationFrame($scope.mainLoop);
 			} else {
-				// Stop incrementing your score
-				$interval.cancel($scope.updateScore);
-
 				// Clear the canvas
 				ctx.fillStyle = '#050505';
 				ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -137,6 +153,11 @@
 						obstacles[i][j].top += 0.5;
 						obstacles[i][j].left += (obstacles[i][j].speed * obstacles[i][j].direction);
 					}
+
+					// find the number of obstacles the player has passed so far
+					if (obstacles[i][0].top > player_y && i + 1 > $scope.score) {
+						$scope.updateScore(i + 1);
+					}
 				}
 		    } 
 
@@ -170,17 +191,17 @@
 			// build them one row at a time
 			for (var i = 0; i < 30; i++) {
 				// so randomly pick each of the variables
-				// the pick the vertical height space
+				// then pick the vertical height space
 				var currentRow = [];
 				var currentRowSettings = {
 					top: obstacleSettings.top,
 					left: obstacleSettings.left,
 					height: obstacleSettings.height,
-					size: obstacleSettings.size[ Math.floor(Math.random() * obstacleSettings.size.length) ],
-					speed: obstacleSettings.speed[ Math.floor(Math.random() * obstacleSettings.speed.length) ],
-					direction: obstacleSettings.direction[ Math.floor(Math.random() * obstacleSettings.direction.length) ],
-					spacing_horizontal: obstacleSettings.spacing_horizontal[ Math.floor(Math.random() * obstacleSettings.spacing_horizontal.length) ],
-					spacing_vertical: obstacleSettings.spacing_vertical[ Math.floor(Math.random() * obstacleSettings.spacing_vertical.length) ]
+					size: obstacleSettings.size[Math.floor(Math.random() * obstacleSettings.size.length)],
+					speed: obstacleSettings.speed[Math.floor(Math.random() * obstacleSettings.speed.length)],
+					direction: obstacleSettings.direction[Math.floor(Math.random() * obstacleSettings.direction.length)],
+					spacing_horizontal: obstacleSettings.spacing_horizontal[Math.floor(Math.random() * obstacleSettings.spacing_horizontal.length)],
+					spacing_vertical: obstacleSettings.spacing_vertical[Math.floor(Math.random() * obstacleSettings.spacing_vertical.length)]
 				};
 
 				// place obstacles in the row
@@ -208,16 +229,17 @@
 			}
 		};
 
-		// Keep score
-		$scope.updateScore = $interval(function() {
+		// Keep score and build more obstacles
+		$scope.updateScore = function(newScore) {
 			if (gameStart && !gameEnd) {
-				$scope.score++;
-				if ($scope.score % 10 == 0) {
+				$scope.score = newScore;
+				$scope.$apply();
+				if ($scope.score % 10 === 0) {
 					obstacleSettings.top = obstacles[obstacles.length - 1][obstacles[obstacles.length - 1].length - 1].top - 40;
 					$scope.buildObstacles();
 				}
 			}
-		}, 1000);
+		};
 
 		// Move your player on keydown
 		document.onkeydown = function(e) {
@@ -232,6 +254,7 @@
 					// Start the game
 					if (!gameStart) {
 						gameStart = true;
+						init();
 						$scope.mainLoop();
 					}
 					break;
@@ -286,7 +309,7 @@
 		// set the opening text that displays on the canvas
 		ctx.fillStyle = '#f1f1f1';
 		ctx.font = '14px zig';
-		ctx.fillText('PRESS THE UP ARROW KEY TO START',33,400);
+		ctx.fillText('PRESS THE UP ARROW KEY TO START', 33, 400);
 
 	};
 
