@@ -62,6 +62,14 @@
 
 		// Submit your score
 		$scope.submitScore = function() {
+			// recalculate the score to help prevent cheaters from changing their score
+			// there is a leeway of 10 points since it's possible you could have moved backwards
+	    	for (var i = 0; i < obstacles.length; i++) {
+				if (obstacles[i][0].top > player_y && $scope.score - (i + 1) > 10) {
+					$scope.score = i + 1;
+					$scope.$apply();
+				}
+			}
 			var scoreObj = { Username: $rootScope.root.username, Score: $scope.score };
 			var jsonScoreObj = JSON.stringify(scoreObj);
 			var url = 'addscore';
